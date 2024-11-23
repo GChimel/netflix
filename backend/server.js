@@ -1,9 +1,17 @@
 import express from 'express';
 
+import authRoutes from './routes/auth-route.js';
+import { ENV_VARS } from './config/envVars.js';
+import { connectDB } from './config/db.js';
+
+const PORT = ENV_VARS.PORT;
 const app = express();
 
-app.get('/', (req, res) => {
-  res.send('Server is up and running!');
-});
+app.use(express.json()); // Allow parse json requests
 
-app.listen(3000, () => console.log('Server started on port 3000'));
+app.use('/api/v1/auth', authRoutes);
+
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+  connectDB();
+});
